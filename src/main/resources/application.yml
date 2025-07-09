@@ -47,3 +47,5 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+    job:
+      enabled: false  # job 자동실행
