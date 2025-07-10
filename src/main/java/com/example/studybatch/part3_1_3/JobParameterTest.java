@@ -1,4 +1,4 @@
-package com.example.studybatch.config;
+package com.example.studybatch.part3_1_3;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
@@ -8,14 +8,16 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 //@Component
-public class JobRunner implements ApplicationRunner {
+public class JobParameterTest implements ApplicationRunner {
 
     private final JobLauncher jobLauncher;
 
     private final Job job;
 
-    public JobRunner(JobLauncher jobLauncher, Job job) {
+    public JobParameterTest(JobLauncher jobLauncher, Job job) {
         this.jobLauncher = jobLauncher;
         this.job = job;
     }
@@ -24,10 +26,11 @@ public class JobRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         JobParameters jobParameters = new JobParametersBuilder()
-                .addString("name", "user3")
+                .addString("name", "user1")
+                .addLong("seq", 1L)
+                .addDate("date", new Date())
                 .toJobParameters();
 
         jobLauncher.run(job, jobParameters);
-
     }
 }
