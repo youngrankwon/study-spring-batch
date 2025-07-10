@@ -25,7 +25,7 @@ import java.util.Map;
  * - 명령어로 실행(PowerShell 실행시 따옴표 꼭 넣기) java -jar .\spring-batch-lecture-0.0.1-SNAPSHOT.jar "name=ran" "seq(long)=7" "date(date)=2025/07/11"
  */
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class JobParameterConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
