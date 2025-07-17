@@ -1,4 +1,4 @@
-package com.example.studybatch.part3_2_2;
+package com.example.studybatch.part3_3;
 
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -6,7 +6,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
 //@Component
-public class ExecutionContextTasklet2 implements Tasklet {
+public class ExecutionContextTasklet3 implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
@@ -15,7 +15,6 @@ public class ExecutionContextTasklet2 implements Tasklet {
 
         if (name == null) {
             chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put("name", "user1");
-            System.out.println("ExecutionContextTasklet2 has executed");
             throw new RuntimeException("step has failed");
         }
 

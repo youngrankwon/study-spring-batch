@@ -48,4 +48,4 @@ spring:
     jdbc:
       initialize-schema: always
     job:
-      enabled: true  # job 자동실행
+      enabled: false  # job 자동실행

@@ -1,20 +1,21 @@
-package com.example.studybatch.part3_2_3;
+package com.example.studybatch.part3_5;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
-//@Configuration
-public class StepContributionConfiguration {
+@Configuration
+public class JobLauncherConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -24,6 +25,7 @@ public class StepContributionConfiguration {
         return this.jobBuilderFactory.get("Job")
                 .start(step1())
                 .next(step2())
+                .incrementer(new RunIdIncrementer())
                 .build();
     }
 
@@ -33,10 +35,7 @@ public class StepContributionConfiguration {
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("contribution.getExitStatus(): " + contribution.getExitStatus());
-                        System.out.println("contribution.getStepExecution().getStepName(): " + contribution.getStepExecution().getStepName());
-                        System.out.println("contribution.getStepExecution().getJobExecution().getJobInstance().getJobName(): " + contribution.getStepExecution().getJobExecution().getJobInstance().getJobName());
-                        contribution.setExitStatus(ExitStatus.STOPPED);
+                        Thread.sleep(3000);
                         return RepeatStatus.FINISHED;
                     }
                 })
@@ -46,11 +45,7 @@ public class StepContributionConfiguration {
     @Bean
     public Step step2() {
         return stepBuilderFactory.get("step2")
-                .tasklet((contribution, chunkContext) -> {
-//                    throw new RuntimeException("step has failed");
-                    System.out.println("step2 has executed");
-                    return RepeatStatus.FINISHED;
-                })
+                .tasklet((contribution, chunkContext) -> null)
                 .build();
     }
 }

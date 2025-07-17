@@ -1,7 +1,6 @@
-package com.example.studybatch.part3_2_3;
+package com.example.studybatch.part3_4;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
@@ -14,16 +13,18 @@ import org.springframework.context.annotation.Bean;
 
 @RequiredArgsConstructor
 //@Configuration
-public class StepContributionConfiguration {
+public class JobRepositoryConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+    private final JobRepositoryListener jobRepositoryListener;
 
     @Bean
     public Job BatchJob() {
         return this.jobBuilderFactory.get("Job")
                 .start(step1())
                 .next(step2())
+                .listener(jobRepositoryListener)
                 .build();
     }
 
@@ -33,10 +34,6 @@ public class StepContributionConfiguration {
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("contribution.getExitStatus(): " + contribution.getExitStatus());
-                        System.out.println("contribution.getStepExecution().getStepName(): " + contribution.getStepExecution().getStepName());
-                        System.out.println("contribution.getStepExecution().getJobExecution().getJobInstance().getJobName(): " + contribution.getStepExecution().getJobExecution().getJobInstance().getJobName());
-                        contribution.setExitStatus(ExitStatus.STOPPED);
                         return RepeatStatus.FINISHED;
                     }
                 })
@@ -46,11 +43,7 @@ public class StepContributionConfiguration {
     @Bean
     public Step step2() {
         return stepBuilderFactory.get("step2")
-                .tasklet((contribution, chunkContext) -> {
-//                    throw new RuntimeException("step has failed");
-                    System.out.println("step2 has executed");
-                    return RepeatStatus.FINISHED;
-                })
+                .tasklet((contribution, chunkContext) -> null)
                 .build();
     }
 }
